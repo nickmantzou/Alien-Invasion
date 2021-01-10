@@ -27,18 +27,8 @@ class AlienInvasion():
         while True:
             self._check_events()   # helper method to watch for keyboard and mouse events
             self.ship.update()     # update the position of the ship based on key presses
-            self.bullets.update()
-
-            # get rid of bullets that have disappeared
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-
+            self._update_bullets()
             self._update_screen()  # helper method to update the screen on every pass
-
-            # get rid of the bullets that have disapeared
-
-
 
     def _check_events(self):   # helper method that only affects the run_game() method
         """Respond to key presses and mouse events"""
@@ -70,8 +60,19 @@ class AlienInvasion():
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullet group"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """Update the position of bullets and get rid of the old bullets"""
+        # update bullet positions
+        self.bullets.update()
+
+        # get rid of bullets that have disappeared
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         """update images on the screen, and flip to the new screen"""
