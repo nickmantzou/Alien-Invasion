@@ -32,6 +32,7 @@ class AlienInvasion():
             self._check_events()   # helper method to watch for keyboard and mouse events
             self.ship.update()     # update the position of the ship based on key presses
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()  # helper method to update the screen on every pass
 
     def _check_events(self):   # helper method that only affects the run_game() method
@@ -78,6 +79,14 @@ class AlienInvasion():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
+    def _update_aliens(self):
+        """
+        check if the fleet is at an edge,
+        then update the positions of all alliens in the fleet
+        """
+        self._check_fleet_edges()
+        self.aliens.update()
+
     def _create_fleet(self):
         """Create the fleet of ALiens"""
         # Create an alien and find the number of aliens in a row
@@ -106,6 +115,19 @@ class AlienInvasion():
         alien.rect.x = alien.x
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)  # alien added to the Group
+
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliens reached an edge"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """frop the entire fleet and change its direction"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
     def _update_screen(self):
         """update images on the screen, and flip to the new screen"""
