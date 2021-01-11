@@ -24,7 +24,7 @@ class AlienInvasion():
 
     def run_game(self):
         """Start the main loop of the game"""
-        while True:
+        while True:   # main game loop is run indefinetely until the sys.exit() command
             self._check_events()   # helper method to watch for keyboard and mouse events
             self.ship.update()     # update the position of the ship based on key presses
             self._update_bullets()
@@ -34,7 +34,7 @@ class AlienInvasion():
         """Respond to key presses and mouse events"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
+                sys.exit()   # quit the python interpreter when q is pressed
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
