@@ -1,10 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+class Ship(Sprite):
     """ a class to manage the ship"""
 
     def __init__(self, ai_game):   # initialization requires also an instance of the current game class
         """Initialize the ship and set its starting position"""
+        super().__init__()
         self.screen = ai_game.screen   # screens are matching with the game
         self.settings = ai_game.settings  # importing the game settings
         self.screen_rect = ai_game.screen.get_rect()   # every object is considered a rectangle, including the screen
